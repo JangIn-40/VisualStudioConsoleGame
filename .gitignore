@@ -2,3 +2,13 @@
 ConsoleGame/.vs/ConsoleGame/v17/ipch/AutoPCH/5c81e3d06a8b11e7/MINESWEEPER.ipch
 ConsoleGame/.vs/ConsoleGame/v17/ipch/AutoPCH/71d436cecd8d24e5/TICTACTO.ipch
 ConsoleGame/.vs/ConsoleGame/v17/ipch/AutoPCH/a077e4bfc960a67/MINESWEEPER.ipch
+*.json
+*.user
+*.filters
+*.pch
+*.log
+*.db
+*.vsidx
+*.backup
+x64/
+.vs/
