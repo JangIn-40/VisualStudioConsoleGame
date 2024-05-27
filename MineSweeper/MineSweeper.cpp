@@ -120,10 +120,10 @@ void GenerateRandomMineLocation(Object *stage, int row, int col, int nMine)
 		{
 			random = dist(mt);
 		} while (setMine[random]);
-		{
-			stage[random] = OBJ_MINE;
-			setMine[random] = true;
-		}
+		
+		stage[random] = OBJ_MINE;
+		setMine[random] = true;
+		
 	}
 }
 
@@ -144,7 +144,7 @@ void Initialize(Object *stage, int row, int col, const char *stageData)
 		case '*':
 			o = OBJ_STAR;
 			break;
-		case 'O':
+		case ' ':
 			o = OBJ_EMPTY_SPACE;
 			break;
 		case '1':
@@ -192,7 +192,7 @@ void Initialize(Object *stage, int row, int col, const char *stageData)
 
 void Draw(const Object *stage, int row, int col, const bool *isVisible, const bool *isFlag)
 {
-	static const char font[]{ 'X', '*', 'O', '1', '2', '3', '4', '5', '6', '7', '8'};
+	static const char font[]{ 'X', '*', ' ', '1', '2', '3', '4', '5', '6', '7', '8'};
 
 	std::cout << "                ";
 	for (int i = 0; i < row; ++i)
@@ -241,6 +241,12 @@ bool FlagPlaced(const Object *stage, int row, int col, int playerRow, int player
 		return false;
 	}
 
+	if (isFlag[playerRow * col + playerCol])
+	{
+		isFlag[playerRow * col + playerCol] = false;
+		return true;
+	}
+
 	isFlag[playerRow * col + playerCol] = true;
 
 	return true;
@@ -249,7 +255,7 @@ bool FlagPlaced(const Object *stage, int row, int col, int playerRow, int player
 // TODO: 플레그 안에 있는 숫자도 보이지 않게 수정필요
 void Visible(const Object *stage, int row, int col, int playerRow, int playerCol, bool *isVisible, bool *isFlag)
 {
-	if (playerRow < 0 || playerRow >= row || playerCol < 0 || playerCol >= col || isVisible[playerRow * col + playerCol])
+	if (playerRow < 0 || playerRow >= row || playerCol < 0 || playerCol >= col || isVisible[playerRow * col + playerCol] || isFlag[playerRow * col + playerCol])
 	{
 		return;
 	}
