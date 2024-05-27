@@ -3,15 +3,15 @@
 #include <windows.h>
 
 const char STAGE_DATA[] = "\
-*****\n\
-*****\n\
-*****\n\
-*****\n\
-*****";
+**********\n\
+**********\n\
+**********\n\
+**********\n\
+**********";
 
-const int STAGE_ROW{ 5 };
-const int STAGE_COL{ 5 };
-const int N_MINE{ 5 };
+const int STAGE_ROW{ 10 };
+const int STAGE_COL{ 10 };
+const int N_MINE{ 10 };
 
 enum Object
 {
@@ -61,7 +61,7 @@ int main()
 		std::cout << "Enter your move(row and column) : ";
 		std::cin >> playeRow >> playerCol;
 
-		if ((playeRow < 0 && playeRow > 4 )|| (playerCol < 0 && playerCol > 4))
+		if ((playeRow < 0 && playeRow > STAGE_ROW - 1 )|| (playerCol < 0 && playerCol > STAGE_COL - 1))
 		{
 			std::cout << "Input correct row and col" << std::endl;
 			Sleep(1000);
@@ -70,7 +70,7 @@ int main()
 
 		Visible(stage, STAGE_ROW, STAGE_COL, playeRow, playerCol, isVisible);
 
-		if (stage[playeRow * STAGE_ROW + playerCol] <= OBJ_MINE)
+		if (stage[playeRow * STAGE_COL + playerCol] == OBJ_MINE)
 		{
 			system("cls");
 			Draw(stage, STAGE_ROW, STAGE_COL, isVisible);

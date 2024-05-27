@@ -24,7 +24,7 @@
     <ProjectGuid>{e7535a57-4c83-4a67-8fd3-d630e2090805}</ProjectGuid>
     <RootNamespace>ConsoleGame</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>ConsoleGame</ProjectName>
+    <ProjectName>Sokoban</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -128,8 +128,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\MineSweeper\MineSweeper.cpp" />
-    <ClCompile Include="..\TicTacTo\TicTacTo.cpp" />
     <ClCompile Include="Sokoban.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
