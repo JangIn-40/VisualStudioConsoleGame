@@ -7,6 +7,11 @@ const char STAGE_DATA[] = "\
 **********\n\
 **********\n\
 **********\n\
+**********\n\
+**********\n\
+**********\n\
+**********\n\
+**********\n\
 **********";
 
 const int STAGE_ROW{ 10 };
@@ -32,9 +37,10 @@ enum Object
 
 void GenerateRandomMineLocation(Object * stage, int row, int col, int nMine);
 void Initialize(Object *stage, int row, int col, const char *stageData);
-void Draw(const Object *stage, int row, int col, bool *isVisible);
-void Visible(Object *stage, int row, int col, int playerRow, int playerCol, bool *isVisible);
-bool IsClear(const Object *stage, int row, int col, bool *isVisible);
+void Draw(const Object *stage, int row, int col, const bool *isVisible, const bool *isFlag);
+bool FlagPlaced(const Object *stage, int row, int col, int playerRow, int playerCol, bool *isFlag, char flag);
+void Visible(const Object *stage, int row, int col, int playerRow, int playerCol, bool *isVisible, bool *isFlag);
+bool IsClear(const Object *stage, int row, int col, const bool *isVisible);
 void CountMines(Object *stage, int row, int col);
 
 int main()
@@ -51,29 +57,38 @@ int main()
 	CountMines(stage, STAGE_ROW, STAGE_COL);
 
 	bool isVisible[STAGE_ROW * STAGE_COL]{};
+	bool isFlag[STAGE_ROW * STAGE_COL]{};
 
 	while (true)
 	{
 		system("cls");
-		Draw(stage, STAGE_ROW, STAGE_COL, isVisible);
+		
+		Draw(stage, STAGE_ROW, STAGE_COL, isVisible, isFlag);
 
-		int playeRow, playerCol;
-		std::cout << "Enter your move(row and column) : ";
-		std::cin >> playeRow >> playerCol;
+		int playerRow, playerCol;
+		char flag;
+		std::cout << "Enter your move(row and column) and f = flag, c = click : ";
+		std::cin >> playerRow >> playerCol >> flag;
 
-		if ((playeRow < 0 && playeRow > STAGE_ROW - 1 )|| (playerCol < 0 && playerCol > STAGE_COL - 1))
+		if ((playerRow < 0 && playerRow > STAGE_ROW - 1 ) || (playerCol < 0 && playerCol > STAGE_COL - 1) ||
+			((flag != 'f' && flag != 'F') && (flag != 'c' && flag != 'C')))
 		{
-			std::cout << "Input correct row and col" << std::endl;
+			std::cout << "Input correct row and col and f, c" << std::endl;
 			Sleep(1000);
 			continue;
 		}
+		
+		if (FlagPlaced(stage, STAGE_ROW, STAGE_COL, playerRow, playerCol, isFlag, flag))
+		{
+			continue;
+		}
 
-		Visible(stage, STAGE_ROW, STAGE_COL, playeRow, playerCol, isVisible);
+		Visible(stage, STAGE_ROW, STAGE_COL, playerRow, playerCol, isVisible, isFlag);
 
-		if (stage[playeRow * STAGE_COL + playerCol] == OBJ_MINE)
+		if (stage[playerRow * STAGE_COL + playerCol] == OBJ_MINE)
 		{
 			system("cls");
-			Draw(stage, STAGE_ROW, STAGE_COL, isVisible);
+			Draw(stage, STAGE_ROW, STAGE_COL, isVisible, isFlag);
 			std::cout << "Game Over!" << std::endl;
 			break;
 		}
@@ -81,7 +96,7 @@ int main()
 		if (IsClear(stage, STAGE_ROW, STAGE_COL, isVisible))
 		{
 			system("cls");
-			Draw(stage, STAGE_ROW, STAGE_COL, isVisible);
+			Draw(stage, STAGE_ROW, STAGE_COL, isVisible, isFlag);
 			std::cout << "Congratulations!" << std::endl;
 			break;
 		}
@@ -175,23 +190,43 @@ void Initialize(Object *stage, int row, int col, const char *stageData)
 	}
 }
 
-void Draw(const Object *stage, int row, int col, bool *isVisible)
+void Draw(const Object *stage, int row, int col, const bool *isVisible, const bool *isFlag)
 {
 	static const char font[]{ 'X', '*', 'O', '1', '2', '3', '4', '5', '6', '7', '8'};
 
+	std::cout << "                ";
+	for (int i = 0; i < row; ++i)
+	{
+		std::cout << i << " ";
+	}
+	std::cout << std::endl;
+
+	std::cout << "                ";
+	for (int i = 0; i < row; ++i)
+	{
+		std::cout << "- ";
+	}
+	std::cout << std::endl;
+
 	for (int y = 0; y < row; y++)
 	{
+		std::cout << "            ";
+		std::cout << y << " | ";
 		for (int x = 0; x < col; x++)
 		{
 			Object o = stage[y * col + x];
-
+			
 			if (isVisible[col * y + x])
 			{
-				std::cout << font[o];
+				std::cout << font[o] << " ";
+			}
+			else if (isFlag[y * col + x])
+			{
+				std::cout << "F ";
 			}
 			else
 			{
-				std::cout << '*';
+				std::cout << "* ";
 			}
 		}
 
@@ -199,9 +234,22 @@ void Draw(const Object *stage, int row, int col, bool *isVisible)
 	}
 }
 
-void Visible(Object *stage, int row, int col, int playerRow, int playerCol, bool *isVisible)
+bool FlagPlaced(const Object *stage, int row, int col, int playerRow, int playerCol, bool *isFlag, char flag)
 {
-	if (playerRow < 0 || playerRow >= row || playerCol < 0 || playerCol >= col || isVisible[playerRow * col + playerCol]) 
+	if ((flag == 'c' || flag == 'C') && flag != 'f' && flag != 'F')
+	{
+		return false;
+	}
+
+	isFlag[playerRow * col + playerCol] = true;
+
+	return true;
+}
+
+// TODO: 플레그 안에 있는 숫자도 보이지 않게 수정필요
+void Visible(const Object *stage, int row, int col, int playerRow, int playerCol, bool *isVisible, bool *isFlag)
+{
+	if (playerRow < 0 || playerRow >= row || playerCol < 0 || playerCol >= col || isVisible[playerRow * col + playerCol])
 	{
 		return;
 	}
@@ -216,7 +264,7 @@ void Visible(Object *stage, int row, int col, int playerRow, int playerCol, bool
 			{
 				if (dy != 0 || dx != 0) 
 				{
-					Visible(stage, row, col, playerRow + dy, playerCol + dx,  isVisible);
+					Visible(stage, row, col, playerRow + dy, playerCol + dx,  isVisible, isFlag);
 				}
 			}
 		}
@@ -227,7 +275,7 @@ void Visible(Object *stage, int row, int col, int playerRow, int playerCol, bool
 	}
 }
 
-bool IsClear(const Object *stage, int row, int col, bool *IsVisible)
+bool IsClear(const Object *stage, int row, int col, const bool *IsVisible)
 {
 	for (int i = 0; i < row; ++i)
 	{
