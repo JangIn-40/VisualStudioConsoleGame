@@ -52,7 +52,6 @@ int main()
 		return -1;
 	}
 
-	Initialize(stage, STAGE_ROW, STAGE_COL, STAGE_DATA);
 	GenerateRandomMineLocation(stage, STAGE_ROW, STAGE_COL, N_MINE);
 	CountMines(stage, STAGE_ROW, STAGE_COL);
 
@@ -127,68 +126,6 @@ void GenerateRandomMineLocation(Object *stage, int row, int col, int nMine)
 	}
 }
 
-void Initialize(Object *stage, int row, int col, const char *stageData)
-{
-	const char *p = stageData;
-	int x{}, y{};
-
-	while (*p != '\0')
-	{
-		Object o;
-
-		switch (*p)
-		{
-		case 'X':
-			o = OBJ_MINE;
-			break;
-		case '*':
-			o = OBJ_STAR;
-			break;
-		case ' ':
-			o = OBJ_EMPTY_SPACE;
-			break;
-		case '1':
-			o = OBJ_AROUND_MINE_NUMBER1;
-			break;
-		case '2':
-			o = OBJ_AROUND_MINE_NUMBER2;
-			break;
-		case '3':
-			o = OBJ_AROUND_MINE_NUMBER3;
-			break;
-		case '4':
-			o = OBJ_AROUND_MINE_NUMBER4;
-			break;
-		case '5':
-			o = OBJ_AROUND_MINE_NUMBER5;
-			break;
-		case '6':
-			o = OBJ_AROUND_MINE_NUMBER6;
-			break;
-		case '7':
-			o = OBJ_AROUND_MINE_NUMBER7;
-			break;
-		case '8':
-			o = OBJ_AROUND_MINE_NUMBER8;
-			break;
-		case '\n':
-			x = 0;
-			y++;
-			o = OBJ_MAX;
-			break;
-		default:
-			o = OBJ_MAX;
-			break;
-		}
-		++p;
-
-		if (o != OBJ_MAX)
-		{
-			stage[y * col + x] = o;
-			x++;
-		}
-	}
-}
 
 void Draw(const Object *stage, int row, int col, const bool *isVisible, const bool *isFlag)
 {
@@ -252,7 +189,6 @@ bool FlagPlaced(const Object *stage, int row, int col, int playerRow, int player
 	return true;
 }
 
-// TODO: 플레그 안에 있는 숫자도 보이지 않게 수정필요
 void Visible(const Object *stage, int row, int col, int playerRow, int playerCol, bool *isVisible, bool *isFlag)
 {
 	if (playerRow < 0 || playerRow >= row || playerCol < 0 || playerCol >= col || isVisible[playerRow * col + playerCol] || isFlag[playerRow * col + playerCol])
