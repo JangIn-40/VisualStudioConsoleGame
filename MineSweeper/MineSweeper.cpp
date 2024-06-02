@@ -191,7 +191,7 @@ bool FlagPlaced(const Object *stage, int row, int col, int playerRow, int player
 
 void Visible(const Object *stage, int row, int col, int playerRow, int playerCol, bool *isVisible, bool *isFlag)
 {
-	if (playerRow < 0 || playerRow >= row || playerCol < 0 || playerCol >= col || isVisible[playerRow * col + playerCol] || isFlag[playerRow * col + playerCol])
+	if (playerRow < 0 || playerRow >= row || playerCol < 0 || playerCol >= col || isVisible[playerRow * col + playerCol])
 	{
 		return;
 	}

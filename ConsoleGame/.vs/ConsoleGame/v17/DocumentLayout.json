@@ -3,10 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\jih10\\MyPlace\\GameCanvas\\CPlusPlus\\VisualStudioConsoleGame\\ConsoleGame\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E9696C0E-5B5A-4F35-9D61-0210DD29CCD8}|..\\CardMatch\\CardMatch.vcxproj|C:\\Users\\jih10\\MyPlace\\GameCanvas\\CPlusPlus\\VisualStudioConsoleGame\\CardMatch\\CardMatch.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A764C423-060A-4B80-942B-4E9BD6473581}|..\\MineSweeper\\MineSweeper.vcxproj|C:\\Users\\jih10\\MyPlace\\GameCanvas\\CPlusPlus\\VisualStudioConsoleGame\\MineSweeper\\MineSweeper.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A764C423-060A-4B80-942B-4E9BD6473581}|..\\MineSweeper\\MineSweeper.vcxproj|C:\\Users\\jih10\\MyPlace\\GameCanvas\\CPlusPlus\\VisualStudioConsoleGame\\MineSweeper\\MineSweeper.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{E9696C0E-5B5A-4F35-9D61-0210DD29CCD8}|..\\CardMatch\\CardMatch.vcxproj|C:\\Users\\jih10\\MyPlace\\GameCanvas\\CPlusPlus\\VisualStudioConsoleGame\\CardMatch\\CardMatch.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E7535A57-4C83-4A67-8FD3-D630E2090805}|ConsoleGame.vcxproj|C:\\Users\\jih10\\MyPlace\\GameCanvas\\CPlusPlus\\VisualStudioConsoleGame\\ConsoleGame\\Sokoban.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -45,30 +45,30 @@
         },
         {
           "DockedWidth": 201,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "MineSweeper.cpp",
               "DocumentMoniker": "C:\\Users\\jih10\\MyPlace\\GameCanvas\\CPlusPlus\\VisualStudioConsoleGame\\MineSweeper\\MineSweeper.cpp",
               "RelativeDocumentMoniker": "..\\MineSweeper\\MineSweeper.cpp",
-              "ToolTip": "C:\\Users\\jih10\\MyPlace\\GameCanvas\\CPlusPlus\\VisualStudioConsoleGame\\MineSweeper\\MineSweeper.cpp",
-              "RelativeToolTip": "..\\MineSweeper\\MineSweeper.cpp",
-              "ViewState": "AQIAACEAAAAAAAAAAAAjwDUAAAAAAAAA",
+              "ToolTip": "C:\\Users\\jih10\\MyPlace\\GameCanvas\\CPlusPlus\\VisualStudioConsoleGame\\MineSweeper\\MineSweeper.cpp*",
+              "RelativeToolTip": "..\\MineSweeper\\MineSweeper.cpp*",
+              "ViewState": "AQIAAAoAAAAAAAAAAAAjwBkAAAAZAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-05-27T02:01:22.132Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "CardMatch.cpp",
               "DocumentMoniker": "C:\\Users\\jih10\\MyPlace\\GameCanvas\\CPlusPlus\\VisualStudioConsoleGame\\CardMatch\\CardMatch.cpp",
               "RelativeDocumentMoniker": "..\\CardMatch\\CardMatch.cpp",
-              "ToolTip": "C:\\Users\\jih10\\MyPlace\\GameCanvas\\CPlusPlus\\VisualStudioConsoleGame\\CardMatch\\CardMatch.cpp*",
-              "RelativeToolTip": "..\\CardMatch\\CardMatch.cpp*",
-              "ViewState": "AQIAAJoAAAAAAAAAAAAjwLIAAAAJAAAA",
+              "ToolTip": "C:\\Users\\jih10\\MyPlace\\GameCanvas\\CPlusPlus\\VisualStudioConsoleGame\\CardMatch\\CardMatch.cpp",
+              "RelativeToolTip": "..\\CardMatch\\CardMatch.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAKsAAAA1AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-06-02T12:11:42.019Z",
               "EditorCaption": ""
