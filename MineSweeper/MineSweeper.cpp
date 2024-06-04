@@ -69,7 +69,7 @@ int main()
 		std::cout << "Enter your move(row and column) and f = flag, c = click : ";
 		std::cin >> playerRow >> playerCol >> flag;
 
-		if ((playerRow < 0 && playerRow > STAGE_ROW - 1 ) || (playerCol < 0 && playerCol > STAGE_COL - 1) ||
+		if ((playerRow < 0 || playerRow > STAGE_ROW - 1 ) || (playerCol < 0 || playerCol > STAGE_COL - 1) ||
 			((flag != 'f' && flag != 'F') && (flag != 'c' && flag != 'C')))
 		{
 			std::cout << "Input correct row and col and f, c" << std::endl;

@@ -48,18 +48,19 @@ void GenerateRandomAlphabet(Object *stage, int row, int col)
 	delete[] setAlphabet;
 }
 
-void Draw(const Object *stage, int row, int col, const bool isMatch[], bool isVisible[])
+// TODO: 카드매치는 클리갛면 카드가 보여야함.. 이걸 까먹냐
+void Draw(const Object *stage, int row, int col, const bool isMatch[], bool isVisible[], bool player1Turn, int playerScores[])
 {
 	static const char font[]{ '*', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' };
-
-	std::cout << "                ";
+	
+	std::cout << "    ";
 	for (int i = 0; i < row; ++i)
 	{
 		std::cout << i << " ";
 	}
 	std::cout << std::endl;
 
-	std::cout << "                ";
+	std::cout << "    ";
 	for (int i = 0; i < row; ++i)
 	{
 		std::cout << "- ";
@@ -68,7 +69,6 @@ void Draw(const Object *stage, int row, int col, const bool isMatch[], bool isVi
 
 	for (int y = 0; y < row; ++y)
 	{
-		std::cout << "            ";
 		std::cout << y << " | ";
 		for (int x = 0; x < col; ++x)
 		{
@@ -90,6 +90,18 @@ void Draw(const Object *stage, int row, int col, const bool isMatch[], bool isVi
 		}
 
 		std::cout << std::endl;
+	}
+
+	std::cout << "Player 1 Score : " << playerScores[0] << std::endl;
+	std::cout << "Player 2 Score : " << playerScores[1] << std::endl;
+
+	if (player1Turn)
+	{
+		std::cout << std::endl << "Player 1 Turn" << std::endl;
+	}
+	else
+	{
+		std::cout << std::endl << "Player 2 Turn" << std::endl;
 	}
 }
 
@@ -120,6 +132,18 @@ bool IsClear(int row, int col, bool isMatch[])
 	return true;
 }
 
+void CountScore(int playerScores[], bool notPlayer1Turn)
+{
+	if (!notPlayer1Turn)
+	{
+		playerScores[0]++;
+	}
+	else
+	{
+		playerScores[1]++;
+	}
+}
+
 int main()
 {
 	Object *stage = new Object[STAGE_ROW * STAGE_COL];
@@ -131,15 +155,17 @@ int main()
 
 	GenerateRandomAlphabet(stage, STAGE_ROW, STAGE_COL);
 
+	int playerScores[2]{};
 	bool isMatch[STAGE_ROW * STAGE_COL]{};
 	bool isVisible[STAGE_ROW * STAGE_COL]{};
 	bool showMoment{};
+	bool player1Turn{ true };
 
 	while (true)
 	{
 		system("cls");
 
-		Draw(stage, STAGE_ROW, STAGE_COL, isMatch, isVisible);
+		Draw(stage, STAGE_ROW, STAGE_COL, isMatch, isVisible, player1Turn, playerScores);
 
 		if (showMoment)
 		{
@@ -155,7 +181,7 @@ int main()
 		std::cout << "Enter coordinates of second card(row colum) : ";
 		std::cin >> secondRow >> secondCol;
 
-		if ((firstRow < 0 && firstRow > STAGE_ROW - 1) || (firstCol < 0 && firstCol > STAGE_COL - 1))
+		if ((firstRow < 0 || firstRow > STAGE_ROW - 1) || (firstCol < 0 || firstCol > STAGE_COL - 1))
 		{
 			std::cout << std::endl << "Invalid Input" << std::endl;
 			Sleep(1000);
@@ -166,21 +192,21 @@ int main()
 		{
 			isMatch[firstRow * STAGE_COL + firstCol] = true;
 			isMatch[secondRow * STAGE_COL + secondCol] = true;
+			CountScore(playerScores, player1Turn);
 		}
 		else
 		{
 			isVisible[firstRow * STAGE_COL + firstCol] = true;
 			isVisible[secondRow * STAGE_COL + secondCol] = true;
 			showMoment = true;
+			player1Turn = !player1Turn;
 		}
 
 		if(IsClear(STAGE_ROW, STAGE_COL, isMatch))
 		{
 			system("cls");
-			Draw(stage, STAGE_ROW, STAGE_COL, isMatch, isVisible);
+			Draw(stage, STAGE_ROW, STAGE_COL, isMatch, isVisible, player1Turn, playerScores);
 			break;
 		}
 	}
-
-	std::cout << "Congratulation" << std::endl;
 }
