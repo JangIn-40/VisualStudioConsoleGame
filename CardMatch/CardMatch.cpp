@@ -132,9 +132,9 @@ bool IsClear(int row, int col, bool isMatch[])
 	return true;
 }
 
-void CountScore(int playerScores[], bool notPlayer1Turn)
+void CountScore(int playerScores[], bool player1Turn)
 {
-	if (!notPlayer1Turn)
+	if (player1Turn)
 	{
 		playerScores[0]++;
 	}
@@ -178,10 +178,16 @@ int main()
 		int firstRow, firstCol, secondRow, secondCol;
 		std::cout << "Enter coordinates of fist card(row colum) : ";
 		std::cin >> firstRow >> firstCol;
+
+		system("cls");
+		isVisible[firstRow * STAGE_COL + firstCol] = true;
+		Draw(stage, STAGE_ROW, STAGE_COL, isMatch, isVisible, player1Turn, playerScores);
+
 		std::cout << "Enter coordinates of second card(row colum) : ";
 		std::cin >> secondRow >> secondCol;
 
-		if ((firstRow < 0 || firstRow > STAGE_ROW - 1) || (firstCol < 0 || firstCol > STAGE_COL - 1))
+		if ((firstRow < 0 || firstRow > STAGE_ROW - 1) || (firstCol < 0 || firstCol > STAGE_COL - 1) ||
+			(secondRow < 0 || secondRow > STAGE_ROW - 1) || (secondCol < 0 || secondCol > STAGE_COL - 1))
 		{
 			std::cout << std::endl << "Invalid Input" << std::endl;
 			Sleep(1000);
