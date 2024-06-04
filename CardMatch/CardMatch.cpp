@@ -107,14 +107,7 @@ void Draw(const Object *stage, int row, int col, const bool isMatch[], bool isVi
 
 bool IsMatch(const Object *stage, int col, int firstRow, int firstCol, int secondRow, int secondCol)
 {
-	if (stage[firstRow * col + firstCol] == stage[secondRow * col + secondCol])
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return stage[firstRow * col + firstCol] == stage[secondRow * col + secondCol];
 }
 
 bool IsClear(int row, int col, bool isMatch[])
@@ -123,7 +116,7 @@ bool IsClear(int row, int col, bool isMatch[])
 	{
 		for (int x = 0; x < col; ++x)
 		{
-			if (isMatch[y * col + x] == false)
+			if (!isMatch[y * col + x])
 			{
 				return false;
 			}
@@ -132,16 +125,11 @@ bool IsClear(int row, int col, bool isMatch[])
 	return true;
 }
 
+// 0번 인덱스 1번플레이어 점수,
+// 1번 인덱스 2번플레이어 점수
 void CountScore(int playerScores[], bool player1Turn)
 {
-	if (player1Turn)
-	{
-		playerScores[0]++;
-	}
-	else
-	{
-		playerScores[1]++;
-	}
+	playerScores[player1Turn ? 0 : 1]++;
 }
 
 int main()
@@ -215,4 +203,6 @@ int main()
 			break;
 		}
 	}
+
+	delete[] stage;
 }

@@ -57,8 +57,7 @@
               "RelativeToolTip": "..\\MineSweeper\\MineSweeper.cpp",
               "ViewState": "AQIAADIAAAAAAAAAAAAtwEcAAABIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-05-27T02:01:22.132Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-27T02:01:22.132Z"
             },
             {
               "$type": "Document",
@@ -66,9 +65,9 @@
               "Title": "CardMatch.cpp",
               "DocumentMoniker": "C:\\Users\\jih10\\MyPlace\\GameCanvas\\CPlusPlus\\VisualStudioConsoleGame\\CardMatch\\CardMatch.cpp",
               "RelativeDocumentMoniker": "..\\CardMatch\\CardMatch.cpp",
-              "ToolTip": "C:\\Users\\jih10\\MyPlace\\GameCanvas\\CPlusPlus\\VisualStudioConsoleGame\\CardMatch\\CardMatch.cpp*",
-              "RelativeToolTip": "..\\CardMatch\\CardMatch.cpp*",
-              "ViewState": "AQIAAKcAAAAAAAAAAAAjwLwAAABeAAAA",
+              "ToolTip": "C:\\Users\\jih10\\MyPlace\\GameCanvas\\CPlusPlus\\VisualStudioConsoleGame\\CardMatch\\CardMatch.cpp",
+              "RelativeToolTip": "..\\CardMatch\\CardMatch.cpp",
+              "ViewState": "AQIAANIAAAAAAAAAAAAAANkAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-06-02T12:11:42.019Z",
               "EditorCaption": ""
