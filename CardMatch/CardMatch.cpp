@@ -1,6 +1,7 @@
 #include <iostream>
 #include <random>
-#include <Windows.h>
+#include <chrono>
+#include <thread>
 
 const char STAGE_DATA[] = "\
 ****\n\
@@ -48,7 +49,6 @@ void GenerateRandomAlphabet(Object *stage, int row, int col)
 	delete[] setAlphabet;
 }
 
-// TODO: 카드매치는 클리갛면 카드가 보여야함.. 이걸 까먹냐
 void Draw(const Object *stage, int row, int col, const bool isMatch[], bool isVisible[], bool player1Turn, int playerScores[])
 {
 	static const char font[]{ '*', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' };
@@ -159,7 +159,7 @@ int main()
 		{
 			std::cout << "No match. Try again";
 			showMoment = false;
-			Sleep(1000);
+			std::this_thread::sleep_for(std::chrono::seconds(2));
 			continue;
 		}
 
@@ -178,7 +178,7 @@ int main()
 			(secondRow < 0 || secondRow > STAGE_ROW - 1) || (secondCol < 0 || secondCol > STAGE_COL - 1))
 		{
 			std::cout << std::endl << "Invalid Input" << std::endl;
-			Sleep(1000);
+			std::this_thread::sleep_for(std::chrono::seconds(2));
 			continue;
 		}
 
