@@ -1,57 +1,166 @@
-// Bingo.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
 #include <random>
-int main()
+
+void Print(const int num[], int row, int col)
 {
-	int num[25];
-
-	for (int i = 0; i < 25; ++i)
+	for (int i = 0; i < row; ++i)
 	{
-		num[i] = i + 1;
+		for (int j = 0; j < col; ++j)
+		{
+			if (num[i * 5 + j] != 0)
+			{
+				std::cout << num[i * row + j] << "\t";
+			}
+			else
+			{
+				std::cout << "*\t";
+			}
+		}
+		std::cout << std::endl;
 	}
+}
 
+void CreateRandomNumbers(int outArray[], int rangeOfNumber)
+{
 	std::random_device rd;
 	std::mt19937 mt(rd());
-	std::uniform_int_distribution<int> dist(0, 24);
+	std::uniform_int_distribution<int> dist(0, rangeOfNumber);
 
 	for (int i = 0; i < 100; ++i)
 	{
 		int randNum = dist(mt);
 		int randNum2 = dist(mt);
-		std::swap(num[randNum], num[randNum2]);
+		std::swap(outArray[randNum], outArray[randNum2]);
+	}
+}
+
+void SetAIStar(int outPlayerArray[], int outAIArray[], int rangeOfNumber, bool setStar[])
+{
+	std::random_device rd;
+	std::mt19937 mt(rd());
+	std::uniform_int_distribution<int> dist(0, rangeOfNumber);
+
+	int aiStar;
+	do
+	{
+		aiStar = dist(mt);
+	} while (setStar[aiStar]);
+
+	for (int i = 0; i < 5; ++i)
+	{
+		for (int j = 0; j < 5; ++j)
+		{
+			if (outPlayerArray[i * 5 + j] == aiStar)
+			{
+				outPlayerArray[i * 5 + j] = 0;
+			}
+			if (outAIArray[i * 5 + j] == aiStar)
+			{
+				outAIArray[i * 5 + j] = 0;
+				setStar[aiStar] = true;
+			}
+		}
+	}
+}
+
+void CountBingoLine(int outArray[], int &outBingoLine)
+{
+	int rowStar{}, colStar{}, rightDiagonal{}, leftDiagonal{};
+	for (int i = 0; i < 5; ++i)
+	{
+		rowStar = colStar = 0;
+		for (int j = 0; j < 5; ++j)
+		{
+			if (outArray[i * 5 + j] == 0)
+				++rowStar;
+			if (outArray[j * 5 + i] == 0)
+				++colStar;
+			if (j == i && outArray[i * 6] == 0)
+				++rightDiagonal;
+			if (j == 4 - i && outArray[i * 4 + 4] == 0)
+				++leftDiagonal;
+		}
+
+		if (rowStar == 5)
+			++outBingoLine;
+		if (colStar == 5)
+			++outBingoLine;
+	}
+	if (rightDiagonal == 5)
+		++outBingoLine;
+	if (leftDiagonal == 5)
+		++outBingoLine;
+}
+
+enum AIMode
+{
+	AIEASY = 1,
+	AIHARD,
+};
+
+int main()
+{
+	int num[25];
+	int AINum[25];
+
+	for (int i = 0; i < 25; ++i)
+	{
+		num[i] = i + 1;
+		AINum[i] = i + 1;
 	}
 
-	int pNum, bingo{};
+	CreateRandomNumbers(num, 24);
+	CreateRandomNumbers(AINum, 24);
+
+	int ai;
 	while (true)
 	{
 		system("cls");
 
-		for (int i = 0; i < 5; ++i)
+		std::cout << "Choose AI Mode 1.Easy 2.Hard : ";
+		std::cin >> ai;
+		
+		if (ai < 1 || ai > 2)
 		{
-			for (int j = 0; j < 5; ++j)
-			{
-				if (num[i * 5 + j] != 0)
-				{
-					std::cout << num[i * 5 + j] << "\t";
-				}
-				else
-				{
-					std::cout << "*\t";
-				}
-
-			}
-			std::cout << std::endl;
+			std::cout << "Choose correct number." << std::endl;
+			system("pause");
 		}
+		else
+			break;
+	}
+	
+	int pNum, bingo{}, AIBingo{};
+	while (true)
+	{
+		system("cls");
 
-		if (bingo == 5)
+		std::cout << "-------------------- Player --------------------" << std::endl;
+		Print(num, 5, 5);
+		std::cout << "Number of Player Bingo " << bingo << std::endl << std::endl;
+
+		switch (ai)
 		{
-			std::cout << "Congratulatinos!" << std::endl;
+		case AIEASY:
+			std::cout << "-------------------- AI Easy --------------------" << std::endl;
+			break;
+		case AIHARD:
+			std::cout << "-------------------- AI Hard --------------------" << std::endl;
+			break;
+		}		
+		Print(AINum, 5, 5);
+		std::cout << "Number of AI Bingo " << AIBingo << std::endl << std::endl;
+
+		if (bingo >= 5)
+		{
+			std::cout << "Congratulatinos! You win AI Easy Mode! " << std::endl;
 			break;
 		}
-
-		std::cout << "Number of Bingo " << bingo << std::endl;
+		else if (AIBingo >= 5)
+		{
+			std::cout << "AI Win. But Cheer up! You will be Win next time";
+			break;
+		}
+		
 		std::cout << "1 ~ 25까지 숫자를 입력하세요" << std::endl;
 		std::cin >> pNum;
 
@@ -62,6 +171,7 @@ int main()
 			continue;
 		}
 		
+		bool setStar[25]{};
 		for (int i = 0; i < 5; ++i)
 		{
 			for (int j = 0; j < 5; ++j)
@@ -70,46 +180,28 @@ int main()
 				{
 					num[i * 5 + j] = 0;
 				}
+				if (AINum[i * 5 + j] == pNum)
+				{
+					AINum[i * 5 + j] = 0;
+					setStar[pNum - 1] = true;
+				}
 			}
 		}
 
-		bingo = 0;
-		int rowStar{}, colStar{}, rightDiagonal{}, leftDiagonal{};
-		for (int i = 0; i < 5; ++i)
+		switch (ai)
 		{
-			rowStar = colStar = 0;
-			for (int j = 0; j < 5; ++j)
-			{
-				if (num[i * 5 + j] == 0)
-					++rowStar;
-				if (num[j * 5 + i] == 0)
-					++colStar;
-				if (j == i && num[i * 6] == 0)
-					++rightDiagonal;
-				if (j == 4 - i && num[i * 4 + 4] == 0)
-					++leftDiagonal;
-			}
-
-			if (rowStar == 5)
-				++bingo;
-			if (colStar == 5)
-				++bingo;
+		case AIEASY:
+			SetAIStar(num, AINum, 24, setStar);
+			break;
+		case AIHARD:
+			break;
+		default:
+			break;
 		}
-		if (rightDiagonal == 5)
-			++bingo;
-		if (leftDiagonal == 5)
-			++bingo;
+
+		bingo = 0, AIBingo = 0;
+		CountBingoLine(num, bingo);
+		CountBingoLine(AINum, AIBingo);
 			
 	}
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
