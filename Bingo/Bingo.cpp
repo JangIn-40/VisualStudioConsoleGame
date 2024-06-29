@@ -20,11 +20,11 @@ void Print(const int num[], int row, int col)
 	}
 }
 
-void CreateRandomNumbers(int outArray[], int rangeOfNumber)
+void CreateRandomNumbers(int outArray[], int maxArrayIndex)
 {
 	std::random_device rd;
 	std::mt19937 mt(rd());
-	std::uniform_int_distribution<int> dist(0, rangeOfNumber);
+	std::uniform_int_distribution<int> dist(0, maxArrayIndex);
 
 	for (int i = 0; i < 100; ++i)
 	{
@@ -34,17 +34,17 @@ void CreateRandomNumbers(int outArray[], int rangeOfNumber)
 	}
 }
 
-void SetAIStar(int outPlayerArray[], int outAIArray[], int rangeOfNumber, bool setStar[])
+void SetAIStar(int outPlayerArray[], int outAIArray[], int maxNumber, bool setStar[])
 {
 	std::random_device rd;
 	std::mt19937 mt(rd());
-	std::uniform_int_distribution<int> dist(0, rangeOfNumber);
+	std::uniform_int_distribution<int> dist(1, maxNumber);
 
 	int aiStar;
 	do
 	{
 		aiStar = dist(mt);
-	} while (setStar[aiStar]);
+	} while (setStar[aiStar - 1]);
 
 	for (int i = 0; i < 5; ++i)
 	{
@@ -57,13 +57,13 @@ void SetAIStar(int outPlayerArray[], int outAIArray[], int rangeOfNumber, bool s
 			if (outAIArray[i * 5 + j] == aiStar)
 			{
 				outAIArray[i * 5 + j] = 0;
-				setStar[aiStar] = true;
+				setStar[aiStar - 1] = true;
 			}
 		}
 	}
 }
 
-void CountBingoLine(int outArray[], int &outBingoLine)
+void CountBingoLine(const int outArray[], int &outBingoLine)
 {
 	int rowStar{}, colStar{}, rightDiagonal{}, leftDiagonal{};
 	for (int i = 0; i < 5; ++i)
@@ -130,6 +130,7 @@ int main()
 	}
 	
 	int pNum, bingo{}, AIBingo{};
+	bool setStar[25]{};
 	while (true)
 	{
 		system("cls");
@@ -171,7 +172,6 @@ int main()
 			continue;
 		}
 		
-		bool setStar[25]{};
 		for (int i = 0; i < 5; ++i)
 		{
 			for (int j = 0; j < 5; ++j)
@@ -191,7 +191,7 @@ int main()
 		switch (ai)
 		{
 		case AIEASY:
-			SetAIStar(num, AINum, 24, setStar);
+			SetAIStar(num, AINum, 25, setStar);
 			break;
 		case AIHARD:
 			break;
@@ -199,9 +199,9 @@ int main()
 			break;
 		}
 
-		bingo = 0, AIBingo = 0;
+		bingo = AIBingo = 0;
 		CountBingoLine(num, bingo);
 		CountBingoLine(AINum, AIBingo);
-			
+		
 	}
 }
