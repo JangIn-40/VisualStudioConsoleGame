@@ -1,6 +1,28 @@
 #include <iostream>
 #include <random>
 
+enum AIMode
+{
+	AIEASY = 1,
+	AIHARD,
+};
+
+enum CountStar
+{
+	LN_H1,
+	LN_H2,
+	LN_H3,
+	LN_H4,
+	LN_H5,
+	LN_V1,
+	LN_V2,
+	LN_V3,
+	LN_V4,
+	LN_V5,
+	LN_RT,
+	LN_LT,
+};
+
 void Print(const int num[], int row, int col)
 {
 	for (int i = 0; i < row; ++i)
@@ -34,7 +56,7 @@ void CreateRandomNumbers(int outArray[], int maxArrayIndex)
 	}
 }
 
-void SetAIStar(int outPlayerArray[], int outAIArray[], int maxNumber, bool setStar[])
+void AIEasyMode(int outPlayerArray[], int outAIArray[], int maxNumber, bool setStar[])
 {
 	std::random_device rd;
 	std::mt19937 mt(rd());
@@ -58,6 +80,101 @@ void SetAIStar(int outPlayerArray[], int outAIArray[], int maxNumber, bool setSt
 			{
 				outAIArray[i * 5 + j] = 0;
 				setStar[aiStar - 1] = true;
+			}
+		}
+	}
+}
+
+CountStar CountingLargeStarLine(const int AIArray[])
+{
+	int rowStar{}, colStar{}, rightDiagonalStar{}, leftDiagonalStar{}, maxStar{}, line{};
+	for (int i = 0; i < 5; ++i)
+	{
+		rowStar = colStar = 0;
+		for (int j = 0; j < 5; ++j)
+		{
+			if (AIArray[i * 5 + j] == 0)
+				++rowStar;
+			if (AIArray[j * 5 + i] == 0)
+				++colStar;
+			if (j == i && AIArray[i * 6] == 0)
+				++rightDiagonalStar;
+			if (j == 4 - i && AIArray[i * 4 + 4] == 0)
+				++leftDiagonalStar;
+
+			if (colStar < 5 && colStar > maxStar)
+			{
+				line = j + 5;
+				maxStar = j;
+			}
+		}
+
+		if (rowStar < 5 && rowStar > maxStar)
+		{
+			line = i;
+			maxStar = rowStar;
+		}
+
+	}
+	if (rightDiagonalStar < 5 && rightDiagonalStar > maxStar)
+	{
+		line = LN_RT;
+		maxStar = rightDiagonalStar;
+	}
+	if (leftDiagonalStar < 5 && leftDiagonalStar > maxStar)
+	{
+		line = LN_LT;
+		maxStar = leftDiagonalStar;
+	}
+
+	return (CountStar)line;
+}
+
+void AIHardMode(int outPlayerArray[], int outAIArray[], bool setStar[])
+{
+	CountStar maxStar = CountingLargeStarLine(outAIArray);
+
+	int aiSelectNum;
+	for (int i = 0; i < 5; ++i)
+	{
+		for (int j = 0; j < 5; ++j)
+		{
+			if (maxStar > LN_H5 && maxStar <= LN_V5 && outAIArray[maxStar * 5 + j] != 0)
+			{
+				aiSelectNum = outAIArray[maxStar * 5 + j];
+				outAIArray[maxStar * 5 + j] = 0;
+				setStar[maxStar * 5 + j] = true;
+			}
+			if (maxStar == LN_RT && j == i && outAIArray[i * 6] != 0)
+			{
+				aiSelectNum = outAIArray[i * 6];
+				outAIArray[i * 6] = 0;
+				setStar[i * 6] = true;
+			}
+			if (maxStar == LN_LT && j == 4 - i && outAIArray[i * 4 + 4] == 0)
+			{
+				aiSelectNum = outAIArray[i * 4 + 4];
+				outAIArray[i * 4 + 4] = 0;
+				setStar[i * 4 + 4] = true;
+			}
+		}
+
+		if (maxStar <= LN_H5 && outAIArray[maxStar * 5 + i] != 0)
+		{
+			aiSelectNum = outAIArray[maxStar * 5 + i];
+			outAIArray[maxStar * 5 + i] = 0;
+			setStar[maxStar * 5 + i] = true;
+			break;
+		}
+	}
+
+	for (int i = 0; i < 5; ++i)
+	{
+		for (int j = 0; j < 5; ++j)
+		{
+			if (outPlayerArray[i * 5 + j] == aiSelectNum)
+			{
+				outPlayerArray[i * 5 + j] = 0;
 			}
 		}
 	}
@@ -91,12 +208,6 @@ void CountBingoLine(const int outArray[], int &outBingoLine)
 	if (leftDiagonal == 5)
 		++outBingoLine;
 }
-
-enum AIMode
-{
-	AIEASY = 1,
-	AIHARD,
-};
 
 int main()
 {
@@ -191,9 +302,10 @@ int main()
 		switch (ai)
 		{
 		case AIEASY:
-			SetAIStar(num, AINum, 25, setStar);
+			AIEasyMode(num, AINum, 25, setStar);
 			break;
 		case AIHARD:
+			AIHardMode(num, AINum, setStar);
 			break;
 		default:
 			break;
